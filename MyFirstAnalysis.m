@@ -2,15 +2,19 @@
 % command eeglab
 [ALLEEG EEG CURRENTSET ALLCOM] = eeglab; 
 home_path = [pwd() '/../'];
-% subject_list = {'pilot1', 'pilot2', 'pilot3', 'pilot4'};
-subject_list = {'pilot1'};
+%subject_list = {'pilot1', 'pilot2', 'pilot3', 'pilot4'};
+subject_list = {'pilot1', 'pilot2'};
 
 window = 1
 step = 0
 
+% open a file to save erpset_list
+f = fopen('erpset_list.txt','w');
+
 %% Data Analysis 
 for s=1:length(subject_list)
 
+    %% EEGLAB operation
     % setting a variable to use often
     data_path = [home_path 'Data/' subject_list{s} '/']
     
@@ -70,6 +74,7 @@ for s=1:length(subject_list)
     EEG.setname = [EEG.setname '_resetrej'];
     EEG = pop_saveset(EEG, 'filename',[EEG.setname '.set'],'filepath', data_path);
 
+    %% ERPLAB Operation
     % make new erpset
     ERP = pop_averager( EEG , 'Criterion', 'good', 'ExcludeBoundary', 'on', 'SEM', 'on' );
     ERP = pop_savemyerp( ERP, 'erpname', [subject_list{s} '_ERPs.set'], 'filename', [subject_list{s} '_ERPs.erp'],'filepath', data_path);
@@ -80,15 +85,26 @@ for s=1:length(subject_list)
     % bin operation
     ERP = pop_binoperator( ERP, {  'b5 = b1-b3 label Faces minus sFaces',...
   'b6 = b2-b4 label Cars minus sCars', 'b7 = b5-b6 label DFaces minus DCars', 'b8=b1-b2 label Faces minus Cars'});
-    ERP = pop_savemyerp(ERP, 'erpname', [subject_list{s} 'diff_ERPs.set'], 'filename', [subject_list{s} 'diff_ERPs.erp'], 'filepath',...
+    ERP = pop_savemyerp(ERP, 'erpname', [subject_list{s} 'diff_ERPs.set'], 'filename', [subject_list{s} '_diff_ERPs.erp'], 'filepath',...
  data_path, 'Warning', 'on');
 
     % plot
-    pop_ploterps(ERP, 7:8 ,1:31)
+    % pop_ploterps(ERP, 7:8 ,1:31)
     
     % measurement
     ERP = pop_geterpvalues( ERP, [ 140 210], [ 5 6], [ 14 15 19 20] , 'Baseline', 'pre', 'FileFormat', 'wide', 'Filename', [data_path 'measurement.txt'],...
  'Fracreplace', 'NaN', 'InterpFactor',  1, 'Measure', 'meanbl', 'PeakOnset',  1, 'Resolution',  3 );
-    
+
+    % save erpset name onto the text file "erpset_list.txt"
+    fprintf(f,[data_path subject_list{s} '_diff_ERPs.erp\n']);
+
 end;
+
+fclose(f);
+%% making erpset_list.txt file from the set
+
+
+%% Grand Averaging
+ERP = pop_gaverager( 'erpset_list.txt' , 'ExcludeNullBin', 'on', 'SEM', 'on' );
+ERP = pop_savemyerp( ERP, 'erpname', 'GrandAvgERPs.set', 'filename', 'GrandAvg.erp','filepath', [home_path 'GrandAvg/']);
 
