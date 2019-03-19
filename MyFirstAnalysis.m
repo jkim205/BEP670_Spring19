@@ -87,7 +87,7 @@ for s=1:length(subject_list)
     
     % measurement
     ERP = pop_geterpvalues( ERP, [ 140 210], [ 5 6], [ 14 15 19 20] , 'Baseline', 'pre', 'FileFormat', 'wide', 'Filename', 'measurement.txt',...
- 'Fracreplace', 'NaN', 'InterpFactor',  1, 'Measure', 'meanbl', 'PeakOnset',  1, 'Resolution',  3 , 'Filepath', data_path);
+ 'Fracreplace', 'NaN', 'InterpFactor',  1, 'Measure', 'meanbl', 'PeakOnset',  1, 'Resolution',  3 );
     
 end;
 
