@@ -1,2 +1,0 @@
-bin5_P3	bin5_P7	bin5_P4	bin5_P8	bin6_P3	bin6_P7	bin6_P4	bin6_P8		    ERPset
-    -2.571	    -6.861	    -2.115	    -4.838	    -2.778	    -6.780	    -2.870	    -5.824	pilot1diff_ERPs.set
