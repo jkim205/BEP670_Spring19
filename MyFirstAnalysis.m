@@ -4,6 +4,7 @@
 home_path = [pwd() '/../'];
 % subject_list = {'pilot1', 'pilot2', 'pilot3', 'pilot4'};
 subject_list = {'pilot1'};
+
 window = 1
 step = 0
 
@@ -86,7 +87,7 @@ for s=1:length(subject_list)
     pop_ploterps(ERP, 7:8 ,1:31)
     
     % measurement
-    ERP = pop_geterpvalues( ERP, [ 140 210], [ 5 6], [ 14 15 19 20] , 'Baseline', 'pre', 'FileFormat', 'wide', 'Filename', 'measurement.txt',...
+    ERP = pop_geterpvalues( ERP, [ 140 210], [ 5 6], [ 14 15 19 20] , 'Baseline', 'pre', 'FileFormat', 'wide', 'Filename', [data_path 'measurement.txt'],...
  'Fracreplace', 'NaN', 'InterpFactor',  1, 'Measure', 'meanbl', 'PeakOnset',  1, 'Resolution',  3 );
     
 end;
